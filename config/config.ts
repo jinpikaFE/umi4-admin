@@ -5,7 +5,14 @@ import routes from './routes';
 const { REACT_APP_ENV } = process.env;
 
 export default defineConfig({
-  antd: {},
+  antd: {
+    // configProvider
+    configProvider: {},
+    // babel-plugin-import
+    import: true,
+    // less or css, default less
+    style: 'less',
+  },
   access: {},
   model: {},
   initialState: {},
