@@ -1,3 +1,4 @@
+import services from '@/services/login';
 import {
   AlipayOutlined,
   LockOutlined,
@@ -15,6 +16,8 @@ import {
 import { Button, Divider, message, Space, Tabs } from 'antd';
 import type { CSSProperties, FC } from 'react';
 import { useState } from 'react';
+
+const { login } = services.LoginController;
 
 type LoginType = 'phone' | 'account';
 
@@ -38,10 +41,13 @@ const Login: FC = () => {
       <LoginFormPage
         backgroundImageUrl="https://gw.alipayobjects.com/zos/rmsportal/FfdJeJRQWjEeGTpqgBKj.png"
         logo="https://github.githubassets.com/images/modules/logos_page/Octocat.png"
-        title="Github"
+        title="jin pi ka"
         subTitle="网站"
-        onFinish={async (values) => {
-          console.log(values);
+        onFinish={async (values: any) => {
+          const res = await login({ ...values, loginType });
+          if (res.code === 200) {
+            message.success(res.message || '登录成功');
+          }
         }}
         activityConfig={{
           style: {
@@ -50,7 +56,7 @@ const Login: FC = () => {
             borderRadius: 8,
             backgroundColor: '#1677FF',
           },
-          title: '活动标题，可配置图片',
+          title: '中后台管理系统',
           subTitle: '活动介绍说明文字',
           action: (
             <Button
@@ -158,7 +164,7 @@ const Login: FC = () => {
                 size: 'large',
                 prefix: <LockOutlined className={'prefixIcon'} />,
               }}
-              placeholder={'密码: ant.design'}
+              placeholder={'密码: admin'}
               rules={[
                 {
                   required: true,
