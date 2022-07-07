@@ -1,7 +1,7 @@
 export default {
   'POST /api/login': (req: any, res: any) => {
     res.json({
-      code: 0,
+      code: 200,
       message: '管理员登录成功',
       data: {
         token:

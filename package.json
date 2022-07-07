@@ -8,7 +8,8 @@
     "prepare": "husky install",
     "prettier": "prettier -c --write \"src/**/*\"",
     "setup": "max setup",
-    "start": "npm run dev",
+    "start": "cross-env PORT=8001 MOCK=none max dev",
+    "start:mock": "cross-env PORT=8001 npm run dev",
     "test": "jest"
   },
   "lint-staged": {
@@ -33,6 +34,7 @@
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
     "@types/testing-library__jest-dom": "^5.14.5",
+    "cross-env": "^7.0.3",
     "husky": "^8.0.1",
     "jest": "^27",
     "lint-staged": "^13.0.3",

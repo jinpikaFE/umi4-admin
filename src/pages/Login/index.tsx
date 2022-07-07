@@ -45,6 +45,7 @@ const Login: FC = () => {
         subTitle="网站"
         onFinish={async (values: any) => {
           const res = await login({ ...values, loginType });
+
           if (res.code === 200) {
             message.success(res.message || '登录成功');
           }
