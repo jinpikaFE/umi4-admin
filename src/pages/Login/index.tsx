@@ -1,4 +1,5 @@
 import services from '@/services/login';
+import { storage } from '@/utils/Storage';
 import {
   AlipayOutlined,
   LockOutlined,
@@ -13,6 +14,7 @@ import {
   ProFormCheckbox,
   ProFormText,
 } from '@ant-design/pro-components';
+import { history } from '@umijs/max';
 import { Button, Divider, message, Space, Tabs } from 'antd';
 import type { CSSProperties, FC } from 'react';
 import { useState } from 'react';
@@ -47,6 +49,8 @@ const Login: FC = () => {
           const res = await login({ ...values, loginType });
 
           if (res.code === 200) {
+            storage.set('token', res?.data?.token);
+            history.push('/home');
             message.success(res.message || '登录成功');
           }
         }}

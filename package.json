@@ -12,14 +12,6 @@
     "start:mock": "cross-env PORT=8001 npm run dev",
     "test": "jest"
   },
-  "lint-staged": {
-    "*.{js,jsx,ts,tsx,css,less}": [
-      "umi lint"
-    ],
-    "**/*.{js,jsx,tsx,ts,less,md,json}": [
-      "prettier --write"
-    ]
-  },
   "dependencies": {
     "@ant-design/icons": "^4.7.0",
     "@ant-design/pro-components": "^1.1.3",

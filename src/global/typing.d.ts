@@ -8,5 +8,6 @@ declare namespace Global {
     code?: number;
     message?: string;
     data: T;
+    total?: number;
   };
 }

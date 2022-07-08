@@ -36,15 +36,43 @@ export default [
   {
     name: '首页',
     path: '/home',
+    icon: 'home',
     component: './Home',
   },
   {
+    name: '权限管理',
+    path: '/accessManage',
+    icon: 'setting',
+    routes: [
+      {
+        name: '组件管理',
+        icon: 'team',
+        path: '/accessManage/componManage',
+        component: './accessManage/ComponManage',
+      },
+      {
+        name: '角色管理',
+        icon: 'team',
+        path: '/accessManage/roleManage',
+        component: './accessManage/RoleManage',
+      },
+      {
+        name: '用户管理',
+        icon: 'team',
+        path: '/accessManage/userManage',
+        component: './accessManage/AccountManage',
+      },
+    ],
+  },
+  {
     name: '权限演示',
+    icon: 'team',
     path: '/access',
     component: './Access',
   },
   {
     name: ' CRUD 示例',
+    icon: 'team',
     path: '/table',
     component: './Table',
   },

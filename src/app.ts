@@ -1,5 +1,5 @@
 // 运行时配置
-import { AxiosResponse, RequestConfig } from '@umijs/max';
+import { AxiosResponse, history, RequestConfig } from '@umijs/max';
 import { message, notification } from 'antd';
 import { storage } from './utils/Storage';
 
@@ -49,11 +49,16 @@ const errorHandler = (error: {
   if (response && response.status) {
     const errorText = codeMessage[response.status] || response.statusText;
     const { status, url } = response;
+
     if (response?.data) {
       notification.error({
         message: `Request error ${status}: ${response?.data?.path}`,
         description: `${response?.data?.message} ${response?.data?.error} ${errorText}`,
       });
+      if (status === 401) {
+        storage.clear();
+        history.replace('/login');
+      }
       return response;
     }
 
