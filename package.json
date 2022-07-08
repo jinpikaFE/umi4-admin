@@ -10,7 +10,9 @@
     "setup": "max setup",
     "start": "cross-env PORT=8080 MOCK=none max dev",
     "start:mock": "cross-env PORT=8080 npm run dev",
-    "test": "jest"
+    "test": "jest",
+    "lint:css": "stylelint src/**/*.less --fix  --custom-syntax postcss-less",
+    "lint": "umi lint"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx,css,less}": [
@@ -38,9 +40,15 @@
     "husky": "^8.0.1",
     "jest": "^27",
     "lint-staged": "^13.0.3",
+    "postcss-less": "^6.0.0",
     "prettier": "^2",
     "prettier-plugin-organize-imports": "^2",
     "prettier-plugin-packagejson": "^2",
+    "stylelint-config-css-modules": "^4.1.0",
+    "stylelint-config-prettier": "^9.0.3",
+    "stylelint-config-standard": "^26.0.0",
+    "stylelint-declaration-block-no-ignored-properties": "^2.5.0",
+    "stylelint-order": "^5.0.0",
     "ts-node": "^10",
     "typescript": "^4"
   }

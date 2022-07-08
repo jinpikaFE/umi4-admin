@@ -3,6 +3,7 @@ import { queryComponList } from '@/services/assessManage/compon/ComponController
 import {
   addRole,
   delRole,
+  editRole,
   queryRoleList,
 } from '@/services/assessManage/role/RoleController';
 // import { getInterviewList } from '@/services/account/api';
@@ -23,7 +24,7 @@ const RoleManager: React.FC = () => {
   }));
 
   const [visibleDrawer, setVisibleDrawer] = useState<boolean>(false);
-  const [cItem, setCItem] = useState();
+  const [cItem, setCItem] = useState<Compon.ComponEntity>();
   const refTable = useRef<ActionType>();
   const formRef = useRef<ProFormInstance | any>();
 
@@ -117,7 +118,12 @@ const RoleManager: React.FC = () => {
   const onFinish = async (values: any) => {
     if (cItem) {
       // 编辑逻辑，后端要操作组件数据和角色数据
-      console.log(values);
+      const res = await editRole({ ...values, id: cItem?.id });
+      if (res?.code === 200) {
+        message.success(res?.message || '创建成功');
+        setVisibleDrawer(false);
+        refTable?.current?.reload();
+      }
     } else {
       // 新增逻辑，后端要操作组件数据和角色数据
       const res = await addRole(values);

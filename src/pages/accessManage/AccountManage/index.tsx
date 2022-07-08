@@ -51,7 +51,7 @@ const AccountManage: FC = () => {
   const onDel = async (id: number) => {
     const res = await delUser({ id });
     if (res?.code === 200) {
-      message.success(res?.message || '删除成功')
+      message.success(res?.message || '删除成功');
       tableRef?.current?.reloadAndRest?.();
     }
   };
@@ -75,13 +75,16 @@ const AccountManage: FC = () => {
     },
     {
       title: '手机号',
-      dataIndex: 'mobile',
+      dataIndex: 'phone',
       hideInSearch: true,
     },
     {
       title: '角色',
       dataIndex: 'role',
       hideInSearch: true,
+      render: (text, record) => {
+        return record?.role?.name || '-';
+      },
     },
     {
       title: '操作',
