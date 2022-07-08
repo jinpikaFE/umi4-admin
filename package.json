@@ -8,8 +8,8 @@
     "prepare": "husky install",
     "prettier": "prettier -c --write \"src/**/*\"",
     "setup": "max setup",
-    "start": "cross-env PORT=8001 MOCK=none max dev",
-    "start:mock": "cross-env PORT=8001 npm run dev",
+    "start": "cross-env PORT=8080 MOCK=none max dev",
+    "start:mock": "cross-env PORT=8080 npm run dev",
     "test": "jest"
   },
   "lint-staged": {
