@@ -21029,7 +21029,7 @@ export const InitPassword = 'ABC123456';
 /** form默认排版块 */
 export const FORM_LAYOUT = {
   labelCol: { span: 6 },
-  wrapperCol: { span: 10 },
+  wrapperCol: { span: 12 },
 };
 
 /** 批量导入处理接口 */

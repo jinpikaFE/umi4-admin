@@ -4,15 +4,15 @@
     "build": "max build",
     "dev": "max dev",
     "postinstall": "max setup",
+    "lint": "umi lint",
+    "lint:css": "stylelint src/**/*.less --fix  --custom-syntax postcss-less",
     "openapi": "umi openapi",
     "prepare": "husky install",
     "prettier": "prettier -c --write \"src/**/*\"",
     "setup": "max setup",
     "start": "cross-env PORT=8080 MOCK=none max dev",
     "start:mock": "cross-env PORT=8080 npm run dev",
-    "test": "jest",
-    "lint:css": "stylelint src/**/*.less --fix  --custom-syntax postcss-less",
-    "lint": "umi lint"
+    "test": "jest"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx,css,less}": [
@@ -27,6 +27,7 @@
     "@ant-design/pro-components": "^1.1.3",
     "@umijs/max": "^4.0.5",
     "@umijs/plugin-openapi": "^1.3.3",
+    "ahooks": "^3.5.2",
     "antd": "^4.20.7"
   },
   "devDependencies": {

@@ -2,6 +2,7 @@ declare namespace Global {
   type pageParams = {
     pageSize?: number;
     current?: number;
+    search?: string;
   };
 
   type Result<T = any> = {

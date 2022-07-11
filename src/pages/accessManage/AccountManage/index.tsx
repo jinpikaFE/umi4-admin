@@ -1,6 +1,7 @@
 import {
   addUser,
   delUser,
+  editUser,
   queryUserList,
 } from '@/services/assessManage/user/UserController';
 import type { ProFormInstance } from '@ant-design/pro-form';
@@ -10,12 +11,9 @@ import ProTable from '@ant-design/pro-table';
 import { Button, message, Modal, Popconfirm } from 'antd';
 import type { FC } from 'react';
 import { useRef } from 'react';
-import { useModel } from 'umi';
 import AccountForm from './components/accountForm';
 
 const AccountManage: FC = () => {
-  const { initialState } = useModel('@@initialState');
-
   // table form逻辑
   const modalFormRef = useRef<ProFormInstance>(null);
   const tableRef = useRef<ActionType>(null);
@@ -24,12 +22,24 @@ const AccountManage: FC = () => {
     const values = await modalFormRef?.current?.getFieldsValue();
     if (item) {
       // 编辑
-      console.log(values, '编辑');
-      tableRef?.current?.reload();
-      return Promise.resolve();
-    } else {
-      const res = await addUser(values);
+      const res = await editUser({
+        ...values,
+        avatar: values?.avatar?.[0]?.file_link,
+        id: item?.id,
+      });
       if (res?.code === 200) {
+        message.success(res?.message || '编辑成功');
+        tableRef?.current?.reload();
+        return Promise.resolve();
+      }
+      return Promise.reject();
+    } else {
+      const res = await addUser({
+        ...values,
+        avatar: values?.avatar?.[0]?.file_link,
+      });
+      if (res?.code === 200) {
+        message.success(res?.message || '创建成功');
         tableRef?.current?.reload();
         return Promise.resolve();
       }
@@ -37,6 +47,23 @@ const AccountManage: FC = () => {
     }
   };
   const onOpenModal = (item: any = null) => {
+    if (item) {
+      item = {
+        ...item,
+        avatar: [
+          {
+            uid: 'test',
+            name: item?.avatar?.split('/')?.[
+              item?.avatar?.split('/')?.length - 1
+            ],
+            // name: '富文本',
+            status: 'done',
+            url: item?.avatar,
+          },
+        ],
+        role: item?.role?.id,
+      };
+    }
     Modal.confirm({
       title: item ? '编辑人员' : '新增人员',
       width: 600,
