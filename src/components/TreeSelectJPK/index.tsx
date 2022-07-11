@@ -81,8 +81,6 @@ const TreeSelectJPK: FC<TreeSelectJPKProps> = (props) => {
   };
 
   useEffect(() => {
-    console.log(value);
-
     if (value) {
       const checked = value?.filter?.((item) => !item?.includes?.('half'));
       console.log(checked);

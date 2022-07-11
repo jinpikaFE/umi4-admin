@@ -7,7 +7,6 @@ declare namespace Login {
 
   type Result_Login = Global.Result<{
     token?: string;
-    role: string;
-    userName: string;
+    userId: string | number;
   }>;
 }

@@ -1,3 +1,4 @@
+import { queryUser } from '@/services/assessManage/user/UserController';
 import services from '@/services/login';
 import { storage } from '@/utils/Storage';
 import {
@@ -14,7 +15,7 @@ import {
   ProFormCheckbox,
   ProFormText,
 } from '@ant-design/pro-components';
-import { history } from '@umijs/max';
+import { history, useModel } from '@umijs/max';
 import { Button, Divider, message, Space, Tabs } from 'antd';
 import type { CSSProperties, FC } from 'react';
 import { useState } from 'react';
@@ -32,6 +33,8 @@ const iconStyles: CSSProperties = {
 
 const Login: FC = () => {
   const [loginType, setLoginType] = useState<LoginType>('phone');
+  const { refresh } = useModel('@@initialState');
+
   return (
     <div
       style={{
@@ -50,8 +53,15 @@ const Login: FC = () => {
 
           if (res.code === 200) {
             storage.set('token', res?.data?.token);
-            history.push('/home');
-            message.success(res.message || '登录成功');
+            const resUser = await queryUser({ id: res?.data?.userId });
+            if (resUser?.code === 200) {
+              console.log(resUser?.data);
+
+              storage.set('userInfo', resUser?.data);
+              refresh();
+              message.success(res.message || '登录成功');
+              history.push('/home');
+            }
           }
         }}
         activityConfig={{

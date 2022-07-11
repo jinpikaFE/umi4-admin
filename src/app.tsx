@@ -1,18 +1,46 @@
 // 运行时配置
 import { AxiosResponse, history, RequestConfig } from '@umijs/max';
 import { message, notification } from 'antd';
+import RightContent from './components/RightContent';
 import { storage } from './utils/Storage';
+
+export type InitialStateType = {
+  currentUser?: User.UserEntity;
+  authArr?: string[];
+  loading?: boolean;
+};
 
 // 全局初始化数据配置，用于 Layout 用户信息和权限初始化
 // 更多信息见文档：https://next.umijs.org/docs/api/runtime-config#getinitialstate
-export async function getInitialState(): Promise<{ name: string }> {
-  return { name: '@umijs/max' };
+export async function getInitialState(): Promise<InitialStateType> {
+  if (storage.get('userInfo')) {
+    const currentUser = storage.get('userInfo');
+    const authArr = currentUser?.role?.authority || [];
+
+    const newAuthArr = authArr?.map((item: any) => {
+      if (item?.includes('half')) {
+        return item?.substring(0, item.length - 5);
+      }
+      return item;
+    });
+
+    if (currentUser) {
+      return {
+        currentUser,
+        authArr: newAuthArr,
+      };
+    }
+
+    return { currentUser: { username: '@umijs/max' } };
+  }
+  return { currentUser: undefined };
 }
 
 export const layout = () => {
   return {
     logo: 'https://img.alicdn.com/tfs/TB1YHEpwUT1gK0jSZFhXXaAtVXa-28-27.svg',
     layout: 'mix',
+    rightContentRender: () => <RightContent />,
     menu: {
       locale: false,
     },
