@@ -1,3 +1,4 @@
+import { sendSms } from '@/global/api';
 import { queryUser } from '@/services/assessManage/user/UserController';
 import services from '@/services/login';
 import { storage } from '@/utils/Storage';
@@ -196,7 +197,7 @@ const Login: FC = () => {
                 size: 'large',
                 prefix: <MobileOutlined className={'prefixIcon'} />,
               }}
-              name="mobile"
+              name="username"
               placeholder={'手机号'}
               rules={[
                 {
@@ -224,15 +225,19 @@ const Login: FC = () => {
                 }
                 return '获取验证码';
               }}
-              name="captcha"
+              phoneName="username"
+              name="password"
               rules={[
                 {
                   required: true,
                   message: '请输入验证码！',
                 },
               ]}
-              onGetCaptcha={async () => {
-                message.success('获取验证码成功！验证码为：1234');
+              onGetCaptcha={async (phone) => {
+                const res = await sendSms({ phone });
+                if (res?.code === 200) {
+                  message.success('获取短信验证码成功');
+                }
               }}
             />
           </>

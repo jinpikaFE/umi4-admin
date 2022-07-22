@@ -3,5 +3,6 @@ declare namespace Role {
     id?: string | number;
     authority: string;
     name: string;
+    is_super: boolean;
   };
 }

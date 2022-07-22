@@ -10,7 +10,7 @@ export async function queryUserList(params: Global.pageParams) {
 }
 
 export async function queryUser(params: Pick<User.UserEntity, 'id'>) {
-  return request<Global.Result<User.UserEntity[]>>(`/api/users/${params?.id}`, {
+  return request<Global.Result<User.UserEntity>>(`/api/users/${params?.id}`, {
     method: 'get',
   });
 }
