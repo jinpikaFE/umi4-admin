@@ -4,5 +4,6 @@ declare namespace Role {
     authority: string;
     name: string;
     is_super: boolean;
+    compon: Compon.ComponEntity;
   };
 }

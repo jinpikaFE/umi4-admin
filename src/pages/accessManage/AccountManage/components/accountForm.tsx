@@ -174,7 +174,6 @@ const AccountForm: FC<THosForm> = (props) => {
       <FormSelectPage
         proFormSelectProps={
           {
-            mode: 'single',
             name: 'role',
             label: '绑定角色',
             rules: [{ required: true, message: '请选择' }],

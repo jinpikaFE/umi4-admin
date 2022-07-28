@@ -20,6 +20,7 @@ import { history, useModel } from '@umijs/max';
 import { Button, Divider, message, Space, Tabs } from 'antd';
 import type { CSSProperties, FC } from 'react';
 import { useState } from 'react';
+import routers from '../../../config/routes';
 
 const { login } = services.LoginController;
 
@@ -56,12 +57,59 @@ const Login: FC = () => {
             storage.set('token', res?.data?.token);
             const resUser = await queryUser({ id: res?.data?.userId });
             if (resUser?.code === 200) {
-              console.log(resUser?.data);
-
               storage.set('userInfo', resUser?.data);
-              refresh();
               message.success(res.message || '登录成功');
-              history.push('/home');
+              // history.push('/home');
+              const currentUser = resUser?.data;
+              const authArr =
+                currentUser?.role?.map((item) => item?.compon).flat(Infinity) ||
+                [];
+
+              const newAuthArr = authArr?.map((item: Compon.ComponEntity) => {
+                if (item?.name?.includes('half')) {
+                  return item?.name?.substring(0, item?.name.length - 5);
+                }
+                return item?.name;
+              });
+              /** 登录进入有权限的页面处理 */
+              const relAuthArr = Array.from(new Set(newAuthArr));
+              let auhtPath: string = '/';
+              const relRoute: any[] = [];
+              const flatRoute = (data: typeof routers) => {
+                data?.forEach?.((item) => {
+                  relRoute.push(item);
+                  if (item?.routes) {
+                    relRoute.push(item?.routes);
+                  }
+                });
+              };
+              flatRoute(routers);
+              const getRouteIndex = (authArrParams: any[]) =>
+                relRoute
+                  .flat(Infinity)
+                  ?.findIndex((item) => item?.title === authArrParams?.[0]);
+              const routeIndex = getRouteIndex(relAuthArr);
+              if (relRoute.flat(Infinity)?.[routeIndex]?.routes) {
+                const indexArr = relAuthArr?.filter((item) => {
+                  return (
+                    relRoute
+                      .flat(Infinity)
+                      ?.[routeIndex]?.routes?.findIndex(
+                        (citem: { title: string }) => citem?.title === item,
+                      ) !== -1
+                  );
+                });
+                auhtPath =
+                  relRoute.flat(Infinity)?.[getRouteIndex(indexArr)]?.path;
+              } else {
+                auhtPath = relRoute.flat(Infinity)?.[routeIndex]?.path;
+              }
+              if ((currentUser?.role || [])?.length === 0) {
+                auhtPath = '/';
+              }
+              history.push(auhtPath);
+              refresh();
+              window?.location.reload();
             }
           }
         }}

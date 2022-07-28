@@ -78,14 +78,6 @@ export default [
     ],
   },
   {
-    name: '权限演示',
-    title: AUTH_ITEM_ENUM.AUTH_DENO,
-    access: 'normalRouteFilter',
-    icon: 'team',
-    path: '/access',
-    component: './Access',
-  },
-  {
     name: 'CRUD 示例',
     title: AUTH_ITEM_ENUM.CRUD,
     access: 'normalRouteFilter',

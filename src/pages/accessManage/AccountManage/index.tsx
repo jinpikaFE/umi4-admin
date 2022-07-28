@@ -110,7 +110,9 @@ const AccountManage: FC = () => {
       dataIndex: 'role',
       hideInSearch: true,
       render: (text, record) => {
-        return record?.role?.name || '-';
+        return record?.role?.length > 0
+          ? record?.role?.map((item: Role.RoleEntity) => item.name).join('，')
+          : '-';
       },
     },
     {

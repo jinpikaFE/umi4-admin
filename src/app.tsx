@@ -1,7 +1,9 @@
 // 运行时配置
-import { AxiosResponse, history, RequestConfig } from '@umijs/max';
-import { message, notification } from 'antd';
+import { AxiosResponse, history, Link, RequestConfig } from '@umijs/max';
+import { Button, message, notification } from 'antd';
+import NotFound from './components/NotFound';
 import RightContent from './components/RightContent';
+import { queryUser } from './services/assessManage/user/UserController';
 import { storage } from './utils/Storage';
 
 export type InitialStateType = {
@@ -14,14 +16,16 @@ export type InitialStateType = {
 // 更多信息见文档：https://next.umijs.org/docs/api/runtime-config#getinitialstate
 export async function getInitialState(): Promise<InitialStateType> {
   if (storage.get('userInfo')) {
-    const currentUser = storage.get('userInfo');
-    const authArr = currentUser?.role?.authority || [];
+    const resUser = await queryUser({ id: storage.get('userInfo')?.id });
+    const currentUser = resUser?.data;
+    const authArr =
+      currentUser?.role?.map((item) => item?.compon).flat(Infinity) || [];
 
-    const newAuthArr = authArr?.map((item: any) => {
-      if (item?.includes('half')) {
-        return item?.substring(0, item.length - 5);
+    const newAuthArr = authArr?.map((item: Compon.ComponEntity) => {
+      if (item?.name?.includes('half')) {
+        return item?.name?.substring(0, item?.name.length - 5);
       }
-      return item;
+      return item?.name;
     });
 
     if (currentUser) {
@@ -41,6 +45,21 @@ export const layout = () => {
     logo: 'https://img.alicdn.com/tfs/TB1YHEpwUT1gK0jSZFhXXaAtVXa-28-27.svg',
     layout: 'mix',
     rightContentRender: () => <RightContent />,
+    // 自定义 403 页面
+    unAccessible: (
+      <NotFound
+        status="403"
+        title="403"
+        subTitle="对不起！暂无该页面访问权限！请联系管理员或更换账号登录"
+        extra={
+          <>
+            <Button type="primary">
+              <Link to="/login">重新登录</Link>
+            </Button>
+          </>
+        }
+      />
+    ),
     menu: {
       locale: false,
     },

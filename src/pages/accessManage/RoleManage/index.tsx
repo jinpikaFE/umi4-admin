@@ -15,14 +15,9 @@ import type { ActionType, ProColumns } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
 import { Button, message, Popconfirm } from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
-import { useModel } from 'umi';
 import RoleFormItem from './components/RoleFormItem';
 
 const RoleManager: React.FC = () => {
-  const { authCompon } = useModel('useAuthModel', (model) => ({
-    authCompon: model.authCompon,
-  }));
-
   const [visibleDrawer, setVisibleDrawer] = useState<boolean>(false);
   const [cItem, setCItem] = useState<Compon.ComponEntity>();
   const refTable = useRef<ActionType>();
@@ -39,7 +34,7 @@ const RoleManager: React.FC = () => {
   };
 
   const edit = async (item: any) => {
-    setCItem(item);
+    setCItem({ ...item, compon: item?.compon?.map((citem: any) => citem?.id) });
     showDrawer();
   };
 

@@ -6,8 +6,6 @@ import React from 'react';
 const Type = {};
 
 const RoleFormItem: React.FC<{ treeData: any[] }> = ({ treeData }) => {
-  console.log(treeData);
-
   return (
     <>
       <ProFormText
@@ -35,16 +33,13 @@ const RoleFormItem: React.FC<{ treeData: any[] }> = ({ treeData }) => {
       />
       <Form.Item
         label="权限"
-        name="authority"
+        name="compon"
         rules={[{ required: true, message: '请选择权限!' }]}
       >
         <TreeSelectJPK
           // onChange 必传爆红修改处理
           {...(Type as any)}
-          treeData={treeData?.map?.((item) => ({
-            ...item,
-            id: item?.id?.toString(),
-          }))}
+          treeData={treeData}
           simpleModePropName={{
             id: 'id',
             pId: 'parentId',

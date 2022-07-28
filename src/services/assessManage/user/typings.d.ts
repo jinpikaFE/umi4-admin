@@ -6,7 +6,7 @@ declare namespace User {
     email?: string;
     password?: string;
     phone?: string;
-    role?: string | Role.RoleEntity;
+    role?: Role.RoleEntity[];
     username?: string;
   };
 }
