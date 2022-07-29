@@ -20,11 +20,17 @@ const AccountManage: FC = () => {
   const onSubmit = async (item: any) => {
     await modalFormRef?.current?.validateFields();
     const values = await modalFormRef?.current?.getFieldsValue();
+    const relVal = {
+      ...values,
+      avatar: values?.avatar?.[0]?.file_link,
+      role: values?.role?.[0]?.label
+        ? values?.role?.map((item: { value: any }) => item?.value)
+        : values?.role,
+    };
     if (item) {
       // 编辑
       const res = await editUser({
-        ...values,
-        avatar: values?.avatar?.[0]?.file_link,
+        ...relVal,
         id: item?.id,
       });
       if (res?.code === 200) {
@@ -34,10 +40,7 @@ const AccountManage: FC = () => {
       }
       return Promise.reject();
     } else {
-      const res = await addUser({
-        ...values,
-        avatar: values?.avatar?.[0]?.file_link,
-      });
+      const res = await addUser(relVal);
       if (res?.code === 200) {
         message.success(res?.message || '创建成功');
         tableRef?.current?.reload();
@@ -61,7 +64,10 @@ const AccountManage: FC = () => {
             url: item?.avatar,
           },
         ],
-        role: item?.role?.id,
+        role: item?.role?.map((item: Role.RoleEntity) => ({
+          label: item?.name,
+          value: item?.id,
+        })),
       };
     }
     Modal.confirm({
