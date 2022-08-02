@@ -2,12 +2,11 @@ export default {
   'POST /api/login': (req: any, res: any) => {
     res.json({
       code: 200,
-      message: '管理员登录成功',
+      message: '登录成功',
       data: {
+        userId: 2,
         token:
-          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6ImFkbWluIiwiX2lkIjowLCJpYXQiOjE2NTcwMDk5MjksImV4cCI6MTY1NzAyNzkyOX0.te_hg9JeCiNIBF5yThNjI8LjX_tYKx5MbOGMatlF6E0',
-        role: 'admin',
-        userName: 'admin',
+          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwiaWQiOjIsImlhdCI6MTY1OTQzMzM1MSwiZXhwIjoxNjU5NTE5NzUxfQ.1LEalubAtZwQHsz2wnWWRTvArbZJwYuBYfcp20gHc84',
       },
     });
   },
