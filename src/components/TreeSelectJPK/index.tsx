@@ -1,6 +1,6 @@
 import { toTree } from '@/utils';
 import { Select, SelectProps, Tree, TreeProps } from 'antd';
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useState } from 'react';
 
 export type TreeSelectJPKProps = {
   treeData: any;
@@ -17,7 +17,7 @@ export type TreeSelectJPKProps = {
   /** simpleMode模式下 id(即为key) pId title 属性名 {id:1, pId:0, title:"test1"} */
   simpleModePropName?: { id?: string; pId?: string; title?: string };
   /** formItemValue */
-  value?: string[];
+  value?: string[][];
   /** formItem 隐式传入的onchange */
   onChange: (value: any) => any;
 };
@@ -34,21 +34,12 @@ const TreeSelectJPK: FC<TreeSelectJPKProps> = (props) => {
     value,
     onChange,
   } = props;
-  const [checkedKeys, setCheckedKeys] = useState<React.Key[]>([]);
-  const [selectValue, setSelectedValue] = useState<React.Key[]>(value || []);
+  const [checkedKeys, setCheckedKeys] = useState<React.Key[]>(value?.[0] || []);
 
   const onCheck = (checked: React.Key[], e: any) => {
-    console.log(
-      checked,
-      checked.concat(e.halfCheckedKeys?.map((item: string) => `${item}-half`)),
-    );
-    setSelectedValue(
-      checked.concat(e.halfCheckedKeys?.map((item: string) => `${item}-half`)),
-    );
+    console.log(checked, e.halfCheckedKeys);
     setCheckedKeys(checked);
-    onChange(
-      checked.concat(e.halfCheckedKeys?.map((item: string) => `${item}-half`)),
-    );
+    onChange([checked, e.halfCheckedKeys]);
   };
 
   /** 对treeData进行加工 */
@@ -80,20 +71,11 @@ const TreeSelectJPK: FC<TreeSelectJPKProps> = (props) => {
     return keyPropName || titlePropName ? getTreeData(treeData) : treeData;
   };
 
-  useEffect(() => {
-    if (value) {
-      const checked = value?.filter?.((item) => !item?.includes?.('half'));
-      console.log(checked);
-      setCheckedKeys(checked);
-    }
-  }, [value]);
-
   return (
     <Select
       mode="multiple"
-      value={selectValue}
+      value={checkedKeys}
       onClear={() => {
-        setSelectedValue([]);
         setCheckedKeys([]);
       }}
       allowClear

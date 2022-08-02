@@ -34,7 +34,13 @@ const RoleManager: React.FC = () => {
   };
 
   const edit = async (item: any) => {
-    setCItem({ ...item, compon: item?.compon?.map((citem: any) => citem?.id) });
+    setCItem({
+      ...item,
+      compon: [
+        item?.compon?.map((citem: any) => citem?.id),
+        item?.half_compon?.map((citem: any) => citem?.id),
+      ],
+    });
     showDrawer();
   };
 
@@ -111,9 +117,14 @@ const RoleManager: React.FC = () => {
   };
 
   const onFinish = async (values: any) => {
+    const relVal = {
+      ...values,
+      compon: values?.compon?.[0],
+      half_compon: values?.compon?.[1],
+    };
     if (cItem) {
       // 编辑逻辑，后端要操作组件数据和角色数据
-      const res = await editRole({ ...values, id: cItem?.id });
+      const res = await editRole({ ...relVal, id: cItem?.id });
       if (res?.code === 200) {
         message.success(res?.message || '创建成功');
         setVisibleDrawer(false);
@@ -121,7 +132,7 @@ const RoleManager: React.FC = () => {
       }
     } else {
       // 新增逻辑，后端要操作组件数据和角色数据
-      const res = await addRole(values);
+      const res = await addRole(relVal);
       if (res?.code === 200) {
         message.success(res?.message || '创建成功');
         setVisibleDrawer(false);
