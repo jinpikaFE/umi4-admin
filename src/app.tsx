@@ -104,7 +104,7 @@ const errorHandler = (error: any): AxiosResponse<unknown, any> | undefined => {
     const errorText = codeMessage[response.status] || response.statusText;
     const { status } = response;
 
-    if (response?.data) {
+    if (typeof response?.data !== 'string') {
       notification.error({
         message: `Request error ${status}: ${config?.url}`,
         description: `${(response?.data as any)?.message} ${errorText}`,
@@ -118,7 +118,7 @@ const errorHandler = (error: any): AxiosResponse<unknown, any> | undefined => {
 
     notification.error({
       message: `Request error ${status}: ${config?.url}`,
-      description: errorText,
+      description: `${response?.data} ${errorText}`,
     });
   } else if (!response) {
     notification.error({
@@ -128,7 +128,6 @@ const errorHandler = (error: any): AxiosResponse<unknown, any> | undefined => {
   }
   return response;
 };
-
 const responseInterceptors = (response: AxiosResponse) => {
   if (response?.data?.code === 200) {
     return response;
