@@ -5,7 +5,7 @@ const users = [
 
 export default {
   'GET /api/users/2': (req: any, res: any) => {
-    res.json({
+    res.status(200).json({
       code: 200,
       message: '查询成功',
       data: {

@@ -1,5 +1,11 @@
 // 运行时配置
-import { AxiosResponse, history, Link, RequestConfig } from '@umijs/max';
+import {
+  AxiosResponse,
+  history,
+  Link,
+  RequestConfig,
+  RunTimeLayoutConfig,
+} from '@umijs/max';
 import { Button, message, notification } from 'antd';
 import NotFound from './components/NotFound';
 import RightContent from './components/RightContent';
@@ -40,10 +46,13 @@ export async function getInitialState(): Promise<InitialStateType> {
   return { currentUser: undefined };
 }
 
-export const layout = () => {
+export const layout: RunTimeLayoutConfig = () => {
   return {
     logo: 'https://img.alicdn.com/tfs/TB1YHEpwUT1gK0jSZFhXXaAtVXa-28-27.svg',
     layout: 'mix',
+    headerTheme: 'light',
+    navTheme: 'light',
+    contentStyle: { background: '#fff' },
     rightContentRender: () => <RightContent />,
     // 自定义 403 页面
     unAccessible: (
@@ -88,19 +97,17 @@ const codeMessage: Record<number, string> = {
  * @zh-CN 异常处理程序
  * @en-US Exception handler
  */
-const errorHandler = (error: {
-  response: Response & { data?: any };
-}): Response => {
-  const { response } = error;
+const errorHandler = (error: any): AxiosResponse<unknown, any> | undefined => {
+  const { response, config } = error;
 
   if (response && response.status) {
     const errorText = codeMessage[response.status] || response.statusText;
-    const { status, url } = response;
+    const { status } = response;
 
     if (response?.data) {
       notification.error({
-        message: `Request error ${status}: ${response?.data?.path}`,
-        description: `${response?.data?.message} ${response?.data?.error} ${errorText}`,
+        message: `Request error ${status}: ${config?.url}`,
+        description: `${(response?.data as any)?.message} ${errorText}`,
       });
       if (status === 401) {
         storage.clear();
@@ -110,7 +117,7 @@ const errorHandler = (error: {
     }
 
     notification.error({
-      message: `Request error ${status}: ${url}`,
+      message: `Request error ${status}: ${config?.url}`,
       description: errorText,
     });
   } else if (!response) {
