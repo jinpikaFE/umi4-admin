@@ -1,7 +1,11 @@
 {
   "private": true,
   "scripts": {
-    "build": "max build",
+    "build": "cross-env UMI_ENV=pro max build",
+    "build:proandrel": "cross-env UMI_ENV=prorelease max build && cross-env UMI_ENV=release max build",
+    "build:prorelease": "cross-env UMI_ENV=prorelease max build",
+    "build:release": "cross-env UMI_ENV=release max build",
+    "build:test": "cross-env UMI_ENV=test umi build",
     "dev": "max dev",
     "postinstall": "max setup",
     "lint": "umi lint",
@@ -11,7 +15,12 @@
     "prettier": "prettier -c --write \"src/**/*\"",
     "setup": "max setup",
     "start": "cross-env PORT=8080 MOCK=none max dev",
+    "start:dev": "cross-env PORT=8080 REACT_APP_ENV=dev MOCK=none UMI_ENV=dev max dev",
     "start:mock": "cross-env PORT=8080 npm run dev",
+    "start:pro": "cross-env PORT=8080 UMI_ENV=pro MOCK=none max dev",
+    "start:prorelease": "cross-env PORT=8080 UMI_ENV=prorelease MOCK=none max dev",
+    "start:release": "cross-env PORT=8080 UMI_ENV=release MOCK=none max dev",
+    "start:test": "cross-env PORT=8080 REACT_APP_ENV=test MOCK=none UMI_ENV=test max dev",
     "test": "jest"
   },
   "lint-staged": {
