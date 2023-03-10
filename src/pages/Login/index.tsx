@@ -79,7 +79,7 @@ const Login: FC = () => {
                 data?.forEach?.((item) => {
                   relRoute.push(item);
                   if (item?.routes) {
-                    relRoute.push(item?.routes);
+                    flatRoute(item?.routes);
                   }
                 });
               };

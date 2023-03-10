@@ -143,7 +143,8 @@ const requestInterceptors = (response: AxiosResponse) => {
 };
 
 export const request: RequestConfig = {
-  timeout: 1000,
+  timeout: 100 * 1000,
+  baseURL: process.env.REACT_APP_BASE_URL,
   requestInterceptors: [requestInterceptors],
   responseInterceptors: [responseInterceptors],
   errorConfig: {
